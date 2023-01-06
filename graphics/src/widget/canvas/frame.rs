@@ -301,8 +301,11 @@ impl Frame {
     pub fn fill_text(&mut self, cache: &text::Cache, text: impl Into<Text>) {
         let text = text.into();
 
-        let metrics =
-            cosmic_text::Metrics::new(text.size as i32, text.size as i32);
+        let metrics = cosmic_text::Metrics::new(
+            text.size as i32,
+            (text.size * 1.2) as i32,
+        );
+
         let attrs = match text.font {
             Font::Default => cosmic_text::Attrs::new(),
             Font::External { name, .. } => cosmic_text::Attrs {
@@ -316,8 +319,12 @@ impl Frame {
             cosmic_text::AttrsList::new(attrs),
         );
 
-        let layout =
-            buffer.layout(&text::FONT_SYSTEM, metrics.font_size, i32::MAX);
+        let layout = buffer.layout(
+            &text::FONT_SYSTEM,
+            metrics.font_size,
+            i32::MAX,
+            cosmic_text::Wrap::None,
+        );
 
         let translation_x = match text.horizontal_alignment {
             alignment::Horizontal::Left => text.position.x,
@@ -337,21 +344,21 @@ impl Frame {
         };
 
         let translation_y = {
-            let total_height = text.size * layout.len() as f32;
+            let total_height = text.size * 1.2 * layout.len() as f32;
 
             match text.vertical_alignment {
                 alignment::Vertical::Top => text.position.y,
                 alignment::Vertical::Center => {
-                    text.position.y + total_height / 2.0
+                    text.position.y - total_height / 2.0
                 }
-                alignment::Vertical::Bottom => text.position.y + total_height,
+                alignment::Vertical::Bottom => text.position.y - total_height,
             }
         };
 
         for run in layout.iter() {
             for glyph in run.glyphs.iter() {
                 let start_x = translation_x + glyph.x + glyph.x_offset;
-                let start_y = translation_y + glyph.y_offset - text.size;
+                let start_y = translation_y + glyph.y_offset + text.size;
 
                 let offset = Vector::new(start_x, start_y);
 

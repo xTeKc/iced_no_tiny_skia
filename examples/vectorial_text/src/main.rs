@@ -153,7 +153,7 @@ impl<Message> canvas::Program<Message> for State {
         frame.fill_text(
             text_cache,
             Text {
-                position: Point::new(0.0, self.size),
+                position: Point::ORIGIN,
                 color: Color::WHITE,
                 font: Font::Default,
                 size: self.size,

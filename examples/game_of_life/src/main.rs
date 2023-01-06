@@ -593,7 +593,7 @@ mod grid {
                 let text = Text {
                     color: Color::WHITE,
                     size: 14.0,
-                    position: Point::new(frame.width(), frame.height() - 4.0),
+                    position: Point::new(frame.width(), frame.height()),
                     horizontal_alignment: alignment::Horizontal::Right,
                     vertical_alignment: alignment::Vertical::Bottom,
                     ..Text::default()
@@ -604,7 +604,7 @@ mod grid {
                         text_cache,
                         Text {
                             content: format!("({}, {})", cell.j, cell.i),
-                            position: text.position - Vector::new(0.0, 20.0),
+                            position: text.position - Vector::new(0.0, 16.0),
                             ..text
                         },
                     );

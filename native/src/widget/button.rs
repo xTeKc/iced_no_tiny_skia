@@ -428,15 +428,17 @@ pub fn layout<Renderer>(
     padding: Padding,
     layout_content: impl FnOnce(&Renderer, &layout::Limits) -> layout::Node,
 ) -> layout::Node {
-    let limits = limits.width(width).height(height);
+    let limits = limits.width(width).height(height).shrink(padding);
 
-    let mut content = layout_content(renderer, &limits.pad(padding));
+    let content = layout_content(renderer, &limits.loose());
     let padding = padding.fit(content.size(), limits.max());
-    let size = limits.pad(padding).resolve(content.size()).pad(padding);
 
-    content.move_to(Point::new(padding.left, padding.top));
+    let size = limits.resolve(content.size(), width, height);
 
-    layout::Node::with_children(size, vec![content])
+    layout::Node::with_children(
+        size.expand(padding),
+        vec![content.move_to(Point::new(padding.left, padding.top))],
+    )
 }
 
 /// Returns the [`mouse::Interaction`] of a [`Button`].

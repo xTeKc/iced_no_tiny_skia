@@ -104,9 +104,7 @@ impl Application for App {
 
     fn view<'a>(&'a self) -> Element<'a, Message> {
         let subtitle = |title, content: Element<'a, Message>| {
-            column![text(title).size(14), content]
-                .width(Length::Fill)
-                .spacing(5)
+            column![text(title).size(14), content].spacing(5)
         };
 
         let mut add_toast = button("Add Toast");
@@ -149,14 +147,11 @@ impl Application for App {
                             Message::Timeout
                         )
                         .step(1.0)
-                        .width(Length::Fill)
                     ]
                     .spacing(5)
                     .into()
                 ),
-                column![add_toast]
-                    .width(Length::Fill)
-                    .align_items(Alignment::End)
+                column![add_toast].align_items(Alignment::End)
             ]
             .spacing(10)
             .max_width(200),
@@ -495,14 +490,14 @@ mod toast {
             bounds: Size,
             position: Point,
         ) -> layout::Node {
-            let limits = layout::Limits::new(Size::ZERO, bounds)
-                .width(Length::Fill)
-                .height(Length::Fill);
+            let limits = layout::Limits::new(Size::ZERO, bounds);
 
             layout::flex::resolve(
                 layout::flex::Axis::Vertical,
                 renderer,
                 &limits,
+                Length::Fill,
+                Length::Fill,
                 10.into(),
                 10.0,
                 Alignment::End,

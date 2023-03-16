@@ -216,7 +216,7 @@ where
         renderer: &Renderer,
         limits: &layout::Limits,
     ) -> layout::Node {
-        let limits = limits.pad(self.padding);
+        let limits = limits.shrink(self.padding);
         let max_size = limits.max();
 
         let title_layout = self
@@ -226,8 +226,8 @@ where
 
         let title_size = title_layout.size();
 
-        let mut node = if let Some(controls) = &self.controls {
-            let mut controls_layout = controls
+        let node = if let Some(controls) = &self.controls {
+            let controls_layout = controls
                 .as_widget()
                 .layout(renderer, &layout::Limits::new(Size::ZERO, max_size));
 
@@ -236,11 +236,13 @@ where
 
             let height = title_size.height.max(controls_size.height);
 
-            controls_layout.move_to(Point::new(space_before_controls, 0.0));
-
             layout::Node::with_children(
                 Size::new(max_size.width, height),
-                vec![title_layout, controls_layout],
+                vec![
+                    title_layout,
+                    controls_layout
+                        .move_to(Point::new(space_before_controls, 0.0)),
+                ],
             )
         } else {
             layout::Node::with_children(
@@ -249,9 +251,7 @@ where
             )
         };
 
-        node.move_to(Point::new(self.padding.left, self.padding.top));
-
-        layout::Node::with_children(node.size().pad(self.padding), vec![node])
+        layout::Node::container(node, self.padding)
     }
 
     pub(crate) fn operate(

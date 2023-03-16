@@ -385,14 +385,10 @@ where
     Renderer: text::Renderer,
 {
     let text_size = size.unwrap_or_else(|| renderer.default_size());
-
     let padding = padding.fit(Size::ZERO, limits.max());
-    let limits = limits.width(width).pad(padding).height(text_size);
+    let contents = limits.shrink(padding).resolve(Size::ZERO, width, text_size);
 
-    let mut text = layout::Node::new(limits.resolve(Size::ZERO));
-    text.move_to(Point::new(padding.left, padding.top));
-
-    layout::Node::with_children(text.size().pad(padding), vec![text])
+    layout::Node::container(layout::Node::new(contents), padding)
 }
 
 /// Processes an [`Event`] and updates the [`State`] of a [`TextInput`]

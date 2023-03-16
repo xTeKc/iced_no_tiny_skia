@@ -107,10 +107,11 @@ impl Sandbox for Styling {
 
         let progress_bar = progress_bar(0.0..=100.0, self.slider_value);
 
-        let scrollable = scrollable(
-            column!["Scroll me!", vertical_space(800), "You did it!"]
-                .width(Length::Fill),
-        )
+        let scrollable = scrollable(column![
+            "Scroll me!",
+            vertical_space(800),
+            "You did it!"
+        ])
         .height(100);
 
         let checkbox = checkbox(

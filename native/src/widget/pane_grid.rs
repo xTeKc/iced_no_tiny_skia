@@ -489,8 +489,7 @@ pub fn layout<Renderer, T>(
     contents: impl Iterator<Item = (Pane, T)>,
     layout_content: impl Fn(T, &Renderer, &layout::Limits) -> layout::Node,
 ) -> layout::Node {
-    let limits = limits.width(width).height(height);
-    let size = limits.resolve(Size::ZERO);
+    let size = limits.resolve(Size::ZERO, width, height);
 
     let regions = node.pane_regions(spacing, size);
     let children = contents
@@ -498,15 +497,13 @@ pub fn layout<Renderer, T>(
             let region = regions.get(&pane)?;
             let size = Size::new(region.width, region.height);
 
-            let mut node = layout_content(
+            let node = layout_content(
                 content,
                 renderer,
                 &layout::Limits::new(size, size),
             );
 
-            node.move_to(Point::new(region.x, region.y));
-
-            Some(node)
+            Some(node.move_to(Point::new(region.x, region.y)))
         })
         .collect();
 

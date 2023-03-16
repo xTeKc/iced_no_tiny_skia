@@ -132,16 +132,17 @@ where
         renderer: &Renderer,
         limits: &layout::Limits,
     ) -> layout::Node {
-        let limits = limits.width(self.width).height(self.height);
-
         let size = self.size.unwrap_or_else(|| renderer.default_size());
 
-        let bounds = limits.max();
+        let (width, height) = renderer.measure(
+            &self.content,
+            size,
+            self.font.clone(),
+            limits.max(),
+        );
 
-        let (width, height) =
-            renderer.measure(&self.content, size, self.font.clone(), bounds);
-
-        let size = limits.resolve(Size::new(width, height));
+        let size =
+            limits.resolve(Size::new(width, height), self.width, self.height);
 
         layout::Node::new(size)
     }

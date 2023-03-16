@@ -353,7 +353,6 @@ where
 {
     use std::f32;
 
-    let limits = limits.width(width).height(Length::Shrink).pad(padding);
     let text_size = text_size.unwrap_or_else(|| renderer.default_size());
 
     let max_width = match width {
@@ -386,10 +385,12 @@ where
         let intrinsic =
             Size::new(max_width + text_size + padding.left, text_size);
 
-        limits.resolve(intrinsic).pad(padding)
+        limits
+            .shrink(padding)
+            .resolve(intrinsic, width, Length::Shrink)
     };
 
-    layout::Node::new(size)
+    layout::Node::new(size.expand(padding))
 }
 
 /// Processes an [`Event`] and updates the [`State`] of a [`PickList`]

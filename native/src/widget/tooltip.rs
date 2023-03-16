@@ -307,7 +307,7 @@ pub fn draw<Renderer>(
                     .then(|| viewport.size())
                     .unwrap_or(Size::INFINITY),
             )
-            .pad(Padding::new(padding)),
+            .shrink(Padding::new(padding)),
         );
 
         let text_bounds = text_layout.bounds();

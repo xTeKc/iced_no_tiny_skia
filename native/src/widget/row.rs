@@ -120,7 +120,7 @@ where
         layout::flex::resolve(
             layout::flex::Axis::Horizontal,
             renderer,
-            &limits,
+            limits,
             self.width,
             self.height,
             self.padding,

@@ -15,6 +15,8 @@ categories = ["gui"]
 default = ["wgpu"]
 # Enable the `wgpu` GPU-accelerated renderer backend
 wgpu = ["iced_renderer/wgpu"]
+# Enables the Tiny Skia rendering backend
+tiny_skia = ["tiny_skia"]
 # Enables the `Image` widget
 image = ["iced_widget/image", "image_rs"]
 # Enables the `Svg` widget
@@ -67,6 +69,7 @@ iced_renderer = { version = "0.1", path = "renderer" }
 iced_widget = { version = "0.1", path = "widget" }
 iced_winit = { version = "0.10", path = "winit", features = ["application"] }
 thiserror = "1"
+tiny_skia = { path = "tiny_skia", optional = true }
 
 [dependencies.image_rs]
 version = "0.24"
